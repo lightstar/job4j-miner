@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.lightstar</groupId>
-    <artifactId>job4j-miner</artifactId>
+    <artifactId>job4j-sapper</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Miner</name>
-    <description>Miner game</description>
+    <name>Sapper</name>
+    <description>Sapper game</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.lightstar.miner.gui.Main</mainClass>
+                            <mainClass>ru.lightstar.sapper.gui.Main</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>
@@ -54,7 +54,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>ru.lightstar.miner.gui.Main</mainClass>
+                    <mainClass>ru.lightstar.sapper.gui.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
