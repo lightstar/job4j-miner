@@ -1,5 +1,7 @@
 package ru.lightstar.miner;
 
+import ru.lightstar.miner.exception.GenerateException;
+
 /**
  * Interface for board generator.
  *
@@ -11,7 +13,11 @@ public interface BoardGenerator {
     /**
      * Generate board cells.
      *
+     * @param width board's width.
+     * @param height board's height/
+     * @param bombCount total bomb count on board.
      * @return generated cells.
+     * @throws GenerateException thrown if parameters are invalid.
      */
-    Cell[][] generate();
+    Cell[][] generate(int width, int height, int bombCount) throws GenerateException;
 }

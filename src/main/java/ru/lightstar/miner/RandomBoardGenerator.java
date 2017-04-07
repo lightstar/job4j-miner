@@ -1,7 +1,9 @@
 package ru.lightstar.miner;
 
-import ru.lightstar.miner.exception.LogicException;
+import ru.lightstar.miner.exception.GenerateException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,45 +17,38 @@ public class RandomBoardGenerator implements BoardGenerator {
     /**
      * Width of board.
      */
-    private final int width;
+    private int width;
 
     /**
      * Height of board.
      */
-    private final int height;
+    private int height;
 
     /**
      * Total bomb count on board.
      */
-    private final int bombCount;
-
-    /**
-     * Constructs <code>RandomBoardGenerator</code> object.
-     *
-     * @param width board's width.
-     * @param height board's height/
-     * @param bombCount total bomb count on board.
-     * @throws LogicException thrown if parameters are invalid.
-     */
-    public RandomBoardGenerator(final int width, final int height, final int bombCount) throws LogicException {
-        if (width <= 0 || height <= 0 || bombCount <= 0) {
-            throw new LogicException("Width, height and bombCount must be greater than zero");
-        }
-
-        if (bombCount > width * height) {
-            throw new LogicException("Too big bomb count");
-        }
-
-        this.width = width;
-        this.height = height;
-        this.bombCount = bombCount;
-    }
+    private int bombCount;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Cell[][] generate() {
+    public Cell[][] generate(final int width, final int height, final int bombCount) throws GenerateException {
+        this.checkParams(width, height, bombCount);
+
+        this.width = width;
+        this.height = height;
+        this.bombCount = bombCount;
+
+        return this.generate();
+    }
+
+    /**
+     * Generate board after all params are set.
+     *
+     * @return generated board's cells.
+     */
+    protected Cell[][] generate() {
         final boolean[][] bombLocations = this.generateBombLocations();
         final int[][] nearestBombCounts = this.generateNearestBombCounts(bombLocations);
         final Cell[][] cells = new Cell[this.height][];
@@ -86,21 +81,21 @@ public class RandomBoardGenerator implements BoardGenerator {
      * @return array of bomb locations.
      */
     private boolean[][] generateBombLocations() {
+        final List<Location> remainedLocations = new ArrayList<>(this.height * this.width);
         final boolean[][] bombLocations = new boolean[this.height][];
         for (int y = 0; y < this.height; y++) {
             bombLocations[y] = new boolean[this.width];
+            for (int x = 0; x < this.width; x++) {
+                remainedLocations.add(new Location(x, y));
+            }
         }
 
         final Random random = new Random();
         for (int i = 0; i < this.bombCount; i++) {
-            final int index = random.nextInt(this.height * this.width);
-            final int y = index / this.width;
-            final int x = index - y * this.width;
-            if (bombLocations[y][x]) {
-                i--;
-            } else {
-                bombLocations[y][x] = true;
-            }
+            final int index = random.nextInt(remainedLocations.size());
+            final Location location = remainedLocations.get(index);
+            bombLocations[location.getY()][location.getX()] = true;
+            remainedLocations.remove(index);
         }
 
         return bombLocations;
@@ -160,5 +155,68 @@ public class RandomBoardGenerator implements BoardGenerator {
      */
     private boolean isBombOnLocation(final int x, final int y, final boolean[][] bombLocations) {
         return y >= 0 && y < this.height && x >= 0 && x < this.width && bombLocations[y][x];
+    }
+
+    /**
+     * Check generate params.
+     *
+     * @param width board's width.
+     * @param height board's height.
+     * @param bombCount total bombs on board.
+     * @throws GenerateException thrown if params are invalid.
+     */
+    private void checkParams(final int width, final int height, final int bombCount) throws GenerateException {
+        if (width <= 0 || height <= 0 || bombCount <= 0) {
+            throw new GenerateException("Width, height and bombCount must be greater than zero");
+        }
+
+        if (bombCount > width * height) {
+            throw new GenerateException("Too big bomb count");
+        }
+    }
+
+    /**
+     * Some cell location.
+     */
+    private static class Location {
+
+        /**
+         * 'x' coordinate of the location.
+         */
+        private final int x;
+
+        /**
+         * 'y' coordinate of the location.
+         */
+        private final int y;
+
+        /**
+         * Constructs <code>Location</code> object
+         *
+         * @param x 'x' coordinate of the location.
+         * @param y 'y' coordinate of the location.
+         */
+        public Location(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        /**
+         * Get 'x' coordinate of the location.
+         *
+         * @return 'x' coordinate of the location.
+         */
+        public int getX() {
+            return x;
+        }
+
+        /**
+         * Get 'y' coordinate of the location.
+         *
+         * @return 'y' coordinate of the location.
+         */
+        public int getY() {
+            return y;
+        }
     }
 }

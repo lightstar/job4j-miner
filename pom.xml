@@ -43,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.lightstar.miner.console.Main</mainClass>
+                            <mainClass>ru.lightstar.miner.gui.Main</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>
@@ -54,11 +54,9 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>ru.lightstar.miner.console.Main</mainClass>
+                    <mainClass>ru.lightstar.miner.gui.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-
 </project>

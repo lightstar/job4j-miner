@@ -11,12 +11,12 @@ import ru.lightstar.miner.io.Output;
  * @author LightStar
  * @since 0.0.1
  */
-public class ConsoleBoard implements Board<Output> {
+public class ConsoleBoard implements Board {
 
     /**
      * <code>Output</code> to draw board on.
      */
-    private Output output;
+    private final Output output;
 
     /**
      * Board cells.
@@ -24,10 +24,11 @@ public class ConsoleBoard implements Board<Output> {
     private Cell[][] cells;
 
     /**
-     * {@inheritDoc}
+     * Constructs <code>ConsoleBoard</code> object.
+     *
+     * @param output <code>Output</code> object for this board.
      */
-    @Override
-    public void setOutput(final Output output) {
+    public ConsoleBoard(final Output output) {
         this.output = output;
     }
 
@@ -44,15 +45,6 @@ public class ConsoleBoard implements Board<Output> {
      */
     @Override
     public void drawBoard() {
-        this.redraw(false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void drawCell(final int x, final int y) {
-        this.output.println("***** SELECT *****");
         this.redraw(false);
     }
 

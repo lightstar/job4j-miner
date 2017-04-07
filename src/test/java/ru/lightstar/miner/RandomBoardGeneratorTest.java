@@ -1,10 +1,10 @@
 package ru.lightstar.miner;
 
 import org.junit.Test;
-import ru.lightstar.miner.exception.LogicException;
+import ru.lightstar.miner.exception.GenerateException;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * <code>RandomBoardGenerator</code> class tests.
@@ -18,9 +18,9 @@ public class RandomBoardGeneratorTest {
      * Test board generation with correct params.
      */
     @Test
-    public void whenGenerateThenResult() throws LogicException {
-        final RandomBoardGenerator generator = new RandomBoardGenerator(4, 2, 3);
-        final Cell[][] cells = generator.generate();
+    public void whenGenerateThenResult() throws GenerateException {
+        final RandomBoardGenerator generator = new RandomBoardGenerator();
+        final Cell[][] cells = generator.generate(4, 2, 3);
 
         int bombCount = 0;
         assertThat(cells.length, is(2));
@@ -39,24 +39,24 @@ public class RandomBoardGeneratorTest {
     /**
      * Test exception thrown on attempt to generate board with too many bombs.
      */
-    @Test(expected = LogicException.class)
-    public void whenTooManyBombsThenException() throws LogicException {
-        new RandomBoardGenerator(4, 2, 10);
+    @Test(expected = GenerateException.class)
+    public void whenTooManyBombsThenException() throws GenerateException {
+        new RandomBoardGenerator().generate(4, 2, 10);
     }
 
     /**
      * Test exception thrown on attempt to generate board with zero dimensions.
      */
-    @Test(expected = LogicException.class)
-    public void whenZeroDimensionsThenException() throws LogicException {
-        new RandomBoardGenerator(0, 2, 1);
+    @Test(expected = GenerateException.class)
+    public void whenZeroDimensionsThenException() throws GenerateException {
+        new RandomBoardGenerator().generate(0, 2, 1);
     }
 
     /**
      * Test exception thrown on attempt to generate board with zero bombs.
      */
-    @Test(expected = LogicException.class)
-    public void whenZeroBombsThenException() throws LogicException {
-        new RandomBoardGenerator(4, 2, 0);
+    @Test(expected = GenerateException.class)
+    public void whenZeroBombsThenException() throws GenerateException {
+        new RandomBoardGenerator().generate(4, 2, 0);
     }
 }

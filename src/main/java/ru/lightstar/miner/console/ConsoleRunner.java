@@ -1,6 +1,7 @@
 package ru.lightstar.miner.console;
 
 import ru.lightstar.miner.*;
+import ru.lightstar.miner.exception.GenerateException;
 import ru.lightstar.miner.exception.LogicException;
 import ru.lightstar.miner.io.Input;
 import ru.lightstar.miner.io.Output;
@@ -51,41 +52,37 @@ public class ConsoleRunner {
      */
     public void run(final Class<? extends BoardGenerator> generatorClass) {
         try {
-            this.prepare(generatorClass);
+            this.init(generatorClass);
             this.play();
-        } catch(LogicException e) {
+        } catch(GenerateException | LogicException e) {
             this.output.println(String.format("%s.", e.getMessage()));
         }
     }
 
     /**
-     * Prepare game.
+     * Init game.
      *
      *
      * @param generatorClass board generator class. It must have 3 integer parameters: width, height and bomb count.
-     * @throws LogicException thrown when there is error in user input.
+     * @throws GenerateException thrown when there is error in user input.
+     * @throws LogicException thrown when there is error in generated board.
      */
-    private void prepare(final Class<? extends BoardGenerator> generatorClass) throws LogicException {
+    private void init(final Class<? extends BoardGenerator> generatorClass) throws GenerateException, LogicException {
         final int width = this.input.askNumber(this.output, "Board width:");
         final int height = this.input.askNumber(this.output, "Board height:");
         final int bombCount = this.input.askNumber(this.output, "Bomb count:");
 
         final BoardGenerator generator;
         try {
-            generator = generatorClass
-                    .getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE)
-                    .newInstance(width, height, bombCount);
+            generator = generatorClass.newInstance();
         } catch (ReflectiveOperationException e) {
-            throw new IllegalArgumentException("Wrong board generator class. " +
-                    "It must have constructor with 3 integer arguments.");
+            throw new IllegalArgumentException("Wrong board generator class. It must have default constructor.");
         }
 
-        final Board<Output> board = new ConsoleBoard();
-        board.setOutput(this.output);
-
+        final ConsoleBoard board = new ConsoleBoard(this.output);
         this.logic = new BaseLogic();
         this.controller = new BaseController(this.logic, board, generator);
-        this.controller.init();
+        this.controller.init(width, height, bombCount);
     }
 
     /**

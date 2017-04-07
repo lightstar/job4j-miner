@@ -28,7 +28,7 @@ public class ConsoleBoardTest {
     /**
      * <code>ByteArrayOutput</code> object used to intercept output in tests.
      */
-    private final ByteArrayOutput output = new ByteArrayOutput();
+    private final ByteArrayOutput output;
 
     /**
      * Helper object used in I/O tests.
@@ -39,7 +39,8 @@ public class ConsoleBoardTest {
      * Constructs <code>ConsoleBoardTest</code> object.
      */
     public ConsoleBoardTest() {
-        this.board = new ConsoleBoard();
+        this.output = new ByteArrayOutput();
+        this.board = new ConsoleBoard(this.output);
         this.cells = new Cell[][]{
                 {new BaseCell(Bomb.BOMB, 0), new BaseCell(Bomb.BOMB, 0)},
                 {new BaseCell(Bomb.NONE, 3), new BaseCell(Bomb.NONE, 3)},
@@ -47,7 +48,6 @@ public class ConsoleBoardTest {
                 {new BaseCell(Bomb.NONE, 1), new BaseCell(Bomb.NONE, 1)},
                 {new BaseCell(Bomb.NONE, 0), new BaseCell(Bomb.NONE, 0)},
         };
-        this.board.setOutput(this.output);
         this.board.setBoard(this.cells);
         this.helper = new IoTestHelper();
     }
@@ -87,26 +87,6 @@ public class ConsoleBoardTest {
                 "[X] [1] ",
                 "[X] [X] ",
                 "[ ] [X] ",
-                ""
-        })));
-    }
-
-    /**
-     * Test drawing one cell.
-     */
-    @Test
-    public void whenDrawCellThenRedrawAll() {
-        this.cells[0][0].setSuggest(Suggest.BOMB);
-        this.cells[0][1].setSuggest(Suggest.BOMB);
-        this.board.drawCell(0, 0);
-
-        assertThat(this.output.toString(), is(this.helper.joinLines(new String[]{
-                "***** SELECT *****",
-                "[?] [?] ",
-                "[X] [X] ",
-                "[X] [X] ",
-                "[X] [X] ",
-                "[X] [X] ",
                 ""
         })));
     }

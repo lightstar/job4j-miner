@@ -1,5 +1,6 @@
 package ru.lightstar.miner;
 
+import ru.lightstar.miner.exception.GenerateException;
 import ru.lightstar.miner.exception.LogicException;
 
 /**
@@ -13,9 +14,10 @@ public interface Controller {
     /**
      * Initialize miner game and all of its components.
      *
+     * @throws GenerateException thrown if generator can't generate board.
      * @throws LogicException thrown if game logic can't initialize.
      */
-    void init() throws LogicException;
+    void init(int width, int height, int bombCount) throws GenerateException, LogicException;
 
     /**
      * Make user's suggestion about the given cell.

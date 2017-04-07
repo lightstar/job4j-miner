@@ -79,9 +79,8 @@ public class ConsoleRunnerTest {
                 "Bombs remained: 3",
                 "x:",
                 "y:",
-                "Bomb[y/n]:",
+                "Bomb [y/n]:",
 
-                "***** SELECT *****",
                 "[?] [X] ",
                 "[X] [X] ",
                 "[X] [X] ",
@@ -91,9 +90,8 @@ public class ConsoleRunnerTest {
                 "Bombs remained: 2",
                 "x:",
                 "y:",
-                "Bomb[y/n]:",
+                "Bomb [y/n]:",
 
-                "***** SELECT *****",
                 "[?] [X] ",
                 "[2] [X] ",
                 "[X] [X] ",
@@ -103,9 +101,8 @@ public class ConsoleRunnerTest {
                 "Bombs remained: 2",
                 "x:",
                 "y:",
-                "Bomb[y/n]:",
+                "Bomb [y/n]:",
 
-                "***** SELECT *****",
                 "[?] [X] ",
                 "[2] [X] ",
                 "[1] [X] ",
@@ -115,9 +112,8 @@ public class ConsoleRunnerTest {
                 "Bombs remained: 2",
                 "x:",
                 "y:",
-                "Bomb[y/n]:",
+                "Bomb [y/n]:",
 
-                "***** SELECT *****",
                 "[?] [X] ",
                 "[2] [X] ",
                 "[1] [X] ",
@@ -127,9 +123,8 @@ public class ConsoleRunnerTest {
                 "Bombs remained: 1",
                 "x:",
                 "y:",
-                "Bomb[y/n]:",
+                "Bomb [y/n]:",
 
-                "***** SELECT *****",
                 "[?] [X] ",
                 "[2] [2] ",
                 "[1] [X] ",
@@ -139,9 +134,8 @@ public class ConsoleRunnerTest {
                 "Bombs remained: 1",
                 "x:",
                 "y:",
-                "Bomb[y/n]:",
+                "Bomb [y/n]:",
 
-                "***** SELECT *****",
                 "[?] [X] ",
                 "[2] [2] ",
                 "[1] [1] ",
@@ -151,7 +145,7 @@ public class ConsoleRunnerTest {
                 "Bombs remained: 1",
                 "x:",
                 "y:",
-                "Bomb[y/n]:",
+                "Bomb [y/n]:",
 
                 "***** CONGRATULATE *****",
                 "[*] [*] ",
@@ -169,24 +163,24 @@ public class ConsoleRunnerTest {
 
         /**
          * Constructs <code>TestBoardGenerator</code> object.
-         *
-         * @param width test width.
-         * @param height test height.
-         * @param bombCount test bomb count.
          */
-        public TestBoardGenerator(final int width, final int height, final int bombCount) {
-            if (width != 2 || height != 4 || bombCount != 3) {
-                throw new IllegalArgumentException("Test parameters are wrong");
-            }
+        public TestBoardGenerator() {
+            super();
         }
 
         /**
          * Generate test board cells.
          *
+         * @param width test width.
+         * @param height test height.
+         * @param bombCount test bomb count.
          * @return generated cells.
          */
         @Override
-        public Cell[][] generate() {
+        public Cell[][] generate(final int width, final int height, final int bombCount) {
+            if (width != 2 || height != 4 || bombCount != 3) {
+                throw new IllegalArgumentException("Test parameters are wrong");
+            }
             return new Cell[][]{
                     {new BaseCell(Bomb.BOMB, 0), new BaseCell(Bomb.BOMB, 0)},
                     {new BaseCell(Bomb.NONE, 2), new BaseCell(Bomb.NONE, 2)},

@@ -1,5 +1,6 @@
 package ru.lightstar.miner;
 
+import ru.lightstar.miner.exception.GenerateException;
 import ru.lightstar.miner.exception.LogicException;
 
 /**
@@ -42,8 +43,8 @@ public class BaseController implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public void init() throws LogicException {
-        final Cell[][] cells = this.generator.generate();
+    public void init(final int width, final int height, final int bombCount) throws GenerateException, LogicException {
+        final Cell[][] cells = this.generator.generate(width, height, bombCount);
         this.logic.setBoard(cells);
         this.board.setBoard(cells);
         this.board.drawBoard();
@@ -61,7 +62,25 @@ public class BaseController implements Controller {
         } else if (this.logic.isWin()) {
             this.board.drawWin();
         } else {
-            this.board.drawCell(x, y);
+            this.board.drawBoard();
         }
+    }
+
+    /**
+     * Get game board.
+     *
+     * @return game board.
+     */
+    public Board getBoard() {
+        return this.board;
+    }
+
+    /**
+     * Get game logic.
+     *
+     * @return game logic.
+     */
+    public Logic getLogic() {
+        return this.logic;
     }
 }
